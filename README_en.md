@@ -2,25 +2,23 @@
 
 **Language / 语言：** [简体中文](README.md) | [English](README_en.md)
 
-**License:** MIT License, free for commercial use. See `LICENSE` for details.
+Open-source (MIT) image annotation tool: **standard annotation + dataset export**. Built with Python + Flask, cross-platform on Windows / Linux / Mac. Model training is not part of this tool — use the dedicated trainer [ytstudio](https://github.com/yuturuishi/ytstudio).
 
-- Website: https://www.yuturuishi.com
-- WeChat: yuturuishi
-- Gitee: https://gitee.com/yuturuishi/ytlabel
-- GitHub: https://github.com/yuturuishi/ytlabel
-
-- ytlabel is an open-source image annotation and model training tool built with Python + Flask, cross-platform on Windows / Linux / Mac. It supports multiple annotation types, AI-assisted auto-labeling, and the full YOLO training pipeline.
+- Website: https://www.yuturuishi.com ｜ WeChat: yuturuishi
+- Gitee: https://gitee.com/yuturuishi/ytlabel ｜ GitHub: https://github.com/yuturuishi/ytlabel
 
 ---
 
 ## Features
 
-- Annotation: multiple annotation types (rectangle, polygon, etc.); import images, videos, and LabelMe datasets
-- AI auto-labeling: large models (LMStudio, vLLM, ollama, Alibaba Cloud) for auto-labeling images and videos
-- Model training: full YOLO pipeline — dataset upload, training, resume-from-checkpoint, testing, parameter view and download
-- Datasets: export to YOLO format with a customizable train / val / test split
-- File management: built-in file manager with browse, upload, and download
-- Deployment: all static assets localized, supports offline deployment
+- **Annotation**: multiple types (rectangle, polygon, etc.); import images, videos, and LabelMe datasets
+- **AI auto-labeling**: works with an LLM API you configure yourself (LMStudio, vLLM, ollama, Alibaba Cloud, etc.)
+- **Dataset export**: YOLO format with a customizable train / val / test split
+- **File management**: built-in file browse, upload, and download
+- **Offline deployment**: all static assets localized, runs on isolated intranets
+- **Model training**: not part of this tool — use [ytstudio](https://github.com/yuturuishi/ytstudio)
+
+**Shortcuts**: `Ctrl+S` save annotations ｜ `Ctrl+Shift+D` clear annotations
 
 ---
 
@@ -35,53 +33,24 @@
 
 ---
 
-## Requirements
-
-- Python 3.8+
-- Dependencies in `requirements.txt`
-- Training requires Ultralytics / PyTorch (CPU or CUDA build)
-- A modern web browser
-
----
-
 ## Quick Start
+
+Requirements: Python 3.9+ (tested on 3.10), a modern web browser.
 
 ```bash
 # Create and activate a virtual environment
 python -m venv venv
-# Windows
-venv\Scripts\activate
-# Linux / Mac
-source venv/bin/activate
+venv\Scripts\activate           # Windows
+# source venv/bin/activate      # Linux / Mac
 
-# Install base dependencies
+# Install dependencies
 pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
-```
 
-Start the server:
-
-```bash
+# Start the server
 python app.py --host 0.0.0.0 --port 9924
 ```
 
-Open `http://127.0.0.1:9924` in your browser.
-
----
-
-## Usage
-
-1. **Install dependencies**: see Quick Start. Training requires additional installs:
-   ```bash
-   pip install ultralytics==8.3.1 -i https://pypi.tuna.tsinghua.edu.cn/simple
-   pip install numpy==1.26.4 -i https://pypi.tuna.tsinghua.edu.cn/simple
-   # CPU build of torch
-   pip install torch==2.1.2 torchvision==0.16.2 -i https://pypi.tuna.tsinghua.edu.cn/simple
-   # CUDA build of torch
-   pip install torch==2.1.0 torchaudio==2.1.0 torchvision==0.16.0 --index-url https://download.pytorch.org/whl/cu121
-   ```
-2. **Start server**: `python app.py --host 0.0.0.0 --port 9924`
-3. **Open**: browser to http://127.0.0.1:9924
-4. **Training**: visit http://127.0.0.1:9924/training — upload dataset → choose model → start training → test / download
+Open http://127.0.0.1:9924 in your browser.
 
 ---
 
@@ -89,53 +58,63 @@ Open `http://127.0.0.1:9924` in your browser.
 
 ```
 ytlabel/
-├── app.py                    # Main application
-├── AiUtils.py                # AI auto-labeling utility class
-├── requirements.txt          # Dependency list
-├── static/                   # Static assets (icons, styles, scripts, local Socket.IO)
-├── templates/                # Page templates
-│   ├── index.html            # Annotation home
-│   ├── training.html         # Training panel
-│   ├── ai_config.html        # AI configuration
-│   └── file_manager.html     # File manager
-├── pre_models/               # Pretrained models (.pt files)
-├── uploads/                  # Upload storage (created at runtime)
-│   ├── annotations/          # Annotation data
-│   ├── config/               # Config files
-│   ├── samples/              # Annotation images
-│   └── training_datasets/    # Training datasets
-├── runs/                     # Training output (created at runtime)
-└── tmp/                      # Training temp files (created at runtime)
+├── app.py                 # Main application
+├── AiUtils.py             # AI auto-labeling utility class
+├── requirements.txt       # Dependency list
+├── config.json            # App configuration
+├── settings.json          # UI settings
+├── language-*.json        # Localization strings
+├── ytlabel.spec           # PyInstaller build config
+├── logo.ico               # App icon
+├── static/                # Static assets (icons, styles, scripts, local Socket.IO)
+├── templates/             # Page templates: index.html (annotation home) / ai_config.html / file_manager.html
+└── uploads/               # Upload storage (created at runtime)
+    ├── annotations/       # Annotation data
+    ├── config/            # Config files
+    └── samples/           # Annotation images
 ```
-
----
-
-## Shortcuts
-
-- **Ctrl+S**: save annotations
-- **Ctrl+Shift+D**: clear annotations
 
 ---
 
 ## Tech Stack
 
-Flask + Flask-SocketIO | HTML/CSS/JS | OpenCV/PIL | Ultralytics YOLO11 | Socket.IO
+Flask + Flask-SocketIO ｜ HTML/CSS/JS ｜ OpenCV/PIL ｜ Socket.IO
 
 ---
 
-## Changelog
+## Version History
 
-Full changelog: [CHANGELOG.md](CHANGELOG.md)
+### v4.0 (current) — 2026/10/04
+- **Built-in model training removed**: focuses on data annotation + dataset export; training moved to [ytstudio](https://github.com/yuturuishi/ytstudio)
+- **Ultralytics fully removed**: deleted the `pre_models/` directory and all official YOLO weights — zero ultralytics residue in the repo
+- **Renamed**: xclabel → ytlabel (incl. `ytlabel.spec`, page titles, local settings keys)
+- **Bulk delete optimized**: removed O(N²) repeated annotation-table I/O, added a global loading overlay
+- **Docs consolidated**: CHANGELOG merged into README; settings panel slimmed; compliance notes updated
+
+### v3.0 — 2026/05/19
+- New standalone training panel: full YOLO11 workflow, resume-from-checkpoint, model testing and download
+- Training state persistence: auto-restore progress after page refresh / SocketIO reconnect
+- Pretrained model dir moved to `pre_models`; Socket.IO bundled locally for offline deployment
+
+### v2.x
+- **v2.7** — 2026/01/05: annotations moved to `uploads/annotations/`, API config to `uploads/config/`
+- **v2.6** — 2026/01/04: added AI auto-labeling (large models / Alibaba Cloud)
+- **v2.4** — 2026/01/03: improved RTSP stream and SocketIO disconnect handling; fixed post-packaging error
+- **v2.3** — 2025/12/30: added file management system (navigate, preview, batch download/delete, upload)
+- **v2.2** — 2025/12/30: original vs rendered comparison after labeling, click to zoom
+- **v2.1** — 2025/12/01: added YOLO11 integration; improved annotation tools, label management, dataset export
+- **v2.0** — 2025/11/29: migrated Django → Flask; video frame extraction, LabelMe import, YOLO export
+
+### v1.0 — 2025/02/17
+- Basic image annotation (rectangle, polygon), Python + Django
+- v1.0 branch: https://gitee.com/yuturuishi/ytlabel/tree/v1.0
 
 ---
 
 ## License
 
-The project's own code is released under the MIT License; keep the copyright notice to use it freely. Third-party libraries are subject to their respective licenses.
+The project's own code is under the **MIT** License — keep the copyright notice to use it freely. Third-party libraries are subject to their respective licenses.
 
-### Third-party dependency compliance
-
-- **Ultralytics (AGPL-3.0)**: ytlabel's training and AI-assisted labeling rely on Ultralytics to load YOLO models (`.pt`). For commercial use (closed-source products, private deployments, SaaS, edge/embedded devices, etc.) you must comply with Ultralytics' license terms or purchase its Enterprise License; ytlabel's MIT license does not cover that obligation. To avoid AGPL entirely, export the model to ONNX / RKNN and use that instead.
-- **Network requests**: ytlabel only talks to local services you control (e.g. itself at `http://127.0.0.1:9924`, or a local/private model API you configure). It does **not** send any user data, annotations, or runtime info to any external official server. The model service address used for AI auto-labeling is configured by you.
-- **Pretrained models**: weights under `pre_models/` are governed by their provider's license; Ultralytics pretrained weights are subject to AGPL / Enterprise license terms.
+- **AI auto-labeling**: runs through an LLM API you configure yourself (LMStudio, vLLM, ollama, Alibaba Cloud — local/private services). It does **not** depend on the Ultralytics library.
+- **Network requests**: only talks to local services and the local/private LLM API you configure. It does **not** send any user data, annotations, or runtime info to any external server.
 - **Disclaimer**: users are responsible for the legality of their deployment environment, models, and data. ytlabel is provided "as is", without warranty.
