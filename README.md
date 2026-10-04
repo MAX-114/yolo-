@@ -132,3 +132,10 @@ Flask + Flask-SocketIO | HTML/CSS/JS | OpenCV/PIL | Ultralytics YOLO11 | Socket.
 ## 授权协议
 
 本项目自有代码使用 MIT 协议，保留版权信息即可自由使用。使用第三方库请遵循其各自授权协议。
+
+### 第三方依赖合规说明
+
+- **Ultralytics（AGPL-3.0）**：ytlabel 的训练与 AI 标注辅助依赖 Ultralytics 加载 YOLO 模型（`.pt`）。若将其用于商业用途（闭源产品、私有部署、SaaS、边缘/嵌入式设备等），须遵守 Ultralytics 许可条款或购买其 Enterprise License；ytlabel 的 MIT 许可不覆盖该部分义务。如需完全规避 AGPL，可将模型导出为 ONNX / RKNN 等格式后使用。
+- **网络请求**：ytlabel 仅与用户本地服务（如自身 `http://127.0.0.1:9924`、用户自行配置的本地/私有大模型 API）通信，**不向任何外部官方服务器回传用户数据、标注内容或运行信息**；AI 自动标注所用模型服务地址由用户自行配置。
+- **预训练模型**：`pre_models/` 下的模型权重许可由提供方负责；Ultralytics 预训练权重受 AGPL / 企业许可约束。
+- **免责**：使用者应自行确保部署环境、所用模型与数据的合法性。ytlabel 按「现状」提供，不作任何担保。

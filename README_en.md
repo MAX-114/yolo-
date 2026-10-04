@@ -132,3 +132,10 @@ Full changelog: [CHANGELOG.md](CHANGELOG.md)
 ## License
 
 The project's own code is released under the MIT License; keep the copyright notice to use it freely. Third-party libraries are subject to their respective licenses.
+
+### Third-party dependency compliance
+
+- **Ultralytics (AGPL-3.0)**: ytlabel's training and AI-assisted labeling rely on Ultralytics to load YOLO models (`.pt`). For commercial use (closed-source products, private deployments, SaaS, edge/embedded devices, etc.) you must comply with Ultralytics' license terms or purchase its Enterprise License; ytlabel's MIT license does not cover that obligation. To avoid AGPL entirely, export the model to ONNX / RKNN and use that instead.
+- **Network requests**: ytlabel only talks to local services you control (e.g. itself at `http://127.0.0.1:9924`, or a local/private model API you configure). It does **not** send any user data, annotations, or runtime info to any external official server. The model service address used for AI auto-labeling is configured by you.
+- **Pretrained models**: weights under `pre_models/` are governed by their provider's license; Ultralytics pretrained weights are subject to AGPL / Enterprise license terms.
+- **Disclaimer**: users are responsible for the legality of their deployment environment, models, and data. ytlabel is provided "as is", without warranty.
